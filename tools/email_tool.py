@@ -41,7 +41,7 @@ def send_email(to: str, subject: str, body: str) -> str:
         with smtplib.SMTP(host, port) as server:
             server.starttls()
             server.login(sender, password)
-            server.sendmail(sender, to, msg.as_string())
+            server.sendmail(sender, to, msg.as_bytes())
         return f"Email sent to {to} with subject '{subject}'"
     except Exception as e:
         return f"Failed to send email: {e}"

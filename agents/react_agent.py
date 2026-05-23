@@ -16,11 +16,16 @@ from __future__ import annotations
 
 import math
 import re
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Callable
 
 from openai import OpenAI
+
+# Force UTF-8 output so Vietnamese / non-ASCII text doesn't crash on Windows cp1252
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from tools.email_tool import parse_and_send as send_email
 from tools.web import http_get, http_get_json, web_search
@@ -86,8 +91,9 @@ Final Answer: <your answer here>
 
 Rules:
 - Always start with Thought:
-- Never skip the Thought step
-- Use Final Answer: only when you have enough information
+- Use Final Answer: as soon as you have enough information
+- If Observation contains the answer, give Final Answer IMMEDIATELY — do not call more tools
+- If a tool returns an error, report it in Final Answer — do NOT troubleshoot or try workarounds
 - If no tool is needed, go straight to Final Answer after one Thought
 """.strip()
 
@@ -122,7 +128,7 @@ def run(
             print(text)
 
     for step in range(1, max_steps + 1):
-        log(f"\n{'─' * 50}  Step {step}")
+        log(f"\n{'=' * 50}  Step {step}")
 
         response = client.chat.completions.create(
             model=model,
