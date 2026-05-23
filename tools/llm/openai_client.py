@@ -14,7 +14,7 @@ load_dotenv()
 def get_client() -> OpenAI:
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        raise EnvironmentError("OPENAI_API_KEY not set. Copy .env.example → .env and fill it in.")
+        raise EnvironmentError("OPENAI_API_KEY not set. Copy .env.example to .env and fill it in.")
     return OpenAI(api_key=api_key)
 
 

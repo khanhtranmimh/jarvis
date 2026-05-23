@@ -12,12 +12,12 @@ def print_response(text: str, title: str = "JARVIS") -> None:
 
 
 def print_info(msg: str) -> None:
-    console.print(f"[bold blue]ℹ[/bold blue]  {msg}")
+    console.print(f"[bold blue][i][/bold blue]  {msg}")
 
 
 def print_success(msg: str) -> None:
-    console.print(f"[bold green]✓[/bold green]  {msg}")
+    console.print(f"[bold green][ok][/bold green]  {msg}")
 
 
 def print_error(msg: str) -> None:
-    console.print(f"[bold red]✗[/bold red]  {msg}")
+    console.print(f"[bold red][!][/bold red]  {msg}")
