@@ -22,6 +22,9 @@ from typing import Callable
 
 from openai import OpenAI
 
+from tools.email_tool import parse_and_send as send_email
+from tools.web import http_get, http_get_json, web_search
+
 # ── Tools ────────────────────────────────────────────────────────────────────
 
 def calculator(expression: str) -> str:
@@ -39,7 +42,7 @@ def get_datetime(_: str = "") -> str:
 def read_file(path: str) -> str:
     try:
         content = Path(path).read_text(encoding="utf-8")
-        return content[:2000]  # cap at 2000 chars
+        return content[:2000]
     except Exception as e:
         return f"Error: {e}"
 
@@ -53,10 +56,14 @@ def list_files(directory: str = ".") -> str:
 
 
 TOOLS: dict[str, tuple[Callable, str]] = {
-    "calculator":   (calculator,  "Evaluate a math expression. Input: expression string e.g. '2 ** 10'"),
+    "calculator":   (calculator,  "Evaluate a math expression. Input: expression e.g. '2 ** 10'"),
     "get_datetime": (get_datetime,"Return current date and time. Input: (leave empty)"),
     "read_file":    (read_file,   "Read contents of a file. Input: file path"),
     "list_files":   (list_files,  "List files in a directory. Input: directory path (default '.')"),
+    "web_search":   (web_search,  "Search the web via DuckDuckGo. Input: search query string"),
+    "http_get":     (http_get,    "HTTP GET a URL and return response text. Input: full URL"),
+    "http_get_json":(http_get_json,"HTTP GET a URL and return parsed JSON. Input: full URL"),
+    "send_email":   (send_email,  "Send an email. Input: 'recipient@email.com | Subject | Body text'"),
 }
 
 # ── Prompt ───────────────────────────────────────────────────────────────────
